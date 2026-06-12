@@ -21,3 +21,5 @@ webdriver-manager>=4.0.2
 
 # Robot Framework reporting and utilities
 robotframework-pythonlibcore>=4.4.1
+
+robotframework-pabot>=4.0

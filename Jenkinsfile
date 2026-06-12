@@ -183,6 +183,27 @@ pipeline {
                 }
             }
         }
+        stage('Generate Robot Metrics') {
+            steps {
+                echo "==== Generating Robot Framework Metrics report ===="
+                bat """
+                    @echo off
+                    call "%VENV_DIR%\\Scripts\\activate.bat"
+
+                    if not exist "%OUTPUT_DIR%\\output.xml" (
+                        echo WARNING: output.xml not found. Skipping metrics generation.
+                        exit /b 0
+                    )
+
+                    robotmetrics --inputpath "%OUTPUT_DIR%" --outputpath "%OUTPUT_DIR%\\metrics"
+                    if errorlevel 1 (
+                        echo WARNING: robotmetrics failed to generate report. Continuing pipeline.
+                    ) else (
+                        echo Robot Framework Metrics report generated successfully.
+                    )
+                """
+            }
+        }
 
         // -------------------------------------------------------------
         // Stage 7: Archive generated reports and logs as artifacts
