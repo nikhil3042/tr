@@ -110,6 +110,7 @@ pipeline {
 
                     echo Verifying Robot Framework installation...
                     python -m robot --version
+                    python -c "import robot; print('Robot Framework module OK:', robot.__file__)"
                     if errorlevel 1 (
                         echo ERROR: Robot Framework is not installed or not accessible in the virtual environment.
                         exit /b 1
