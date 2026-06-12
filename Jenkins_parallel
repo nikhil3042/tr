@@ -137,7 +137,7 @@ pipeline {
                     mkdir "%OUTPUT_DIR%"
 
                     echo Verifying pabot installation...
-                    python -m pabot.pabot --version
+                    python -c "import pabot; print('Pabot module OK:', pabot.__file__)"
                     if errorlevel 1 (
                         echo ERROR: pabot is not installed or not accessible in the virtual environment.
                         exit /b 1
@@ -149,8 +149,6 @@ pipeline {
                     set RC=%ERRORLEVEL%
                     echo Pabot execution finished with exit code %RC%.
 
-                    rem Robot/pabot exit codes > 0 may indicate failed tests; do not hard-fail the
-                    rem pipeline here so reports can still be published. Capture status only.
                     exit /b 0
                 """
             }
