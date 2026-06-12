@@ -195,17 +195,14 @@ pipeline {
                         exit /b 0
                     )
 
-                    echo --- robotmetrics help ---
-                    robotmetrics -h
-                    echo --- end help ---
-
-                    robotmetrics -I "%WORKSPACE%\\%OUTPUT_DIR%\\output.xml" -O "%WORKSPACE%\\%OUTPUT_DIR%"
+                    robotmetrics -I "%OUTPUT_DIR%"
                     if errorlevel 1 (
                         echo WARNING: robotmetrics failed to generate report. Continuing pipeline.
                     ) else (
                         echo Robot Framework Metrics report generated successfully.
                     )
 
+                    rem Always exit 0 so this optional/non-critical stage never fails the build
                     exit /b 0
                 """
             }
