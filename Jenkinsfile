@@ -195,12 +195,15 @@ pipeline {
                         exit /b 0
                     )
 
-                    robotmetrics --inputpath "%OUTPUT_DIR%" --outputpath "%OUTPUT_DIR%\\metrics"
+                    robotmetrics -I "%OUTPUT_DIR%" -O "%OUTPUT_DIR%\\metrics.html"
                     if errorlevel 1 (
                         echo WARNING: robotmetrics failed to generate report. Continuing pipeline.
                     ) else (
                         echo Robot Framework Metrics report generated successfully.
                     )
+
+                    rem Always exit 0 so this optional/non-critical stage never fails the build
+                    exit /b 0
                 """
             }
         }
