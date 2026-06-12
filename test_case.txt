@@ -1,0 +1,25 @@
+1.Login to UI.
+2. Navigate to Notes App UI module.
+3. Create a new note:
+    o Enter Title
+    o Enter Description
+    o Click Save
+Capture:
+• Note title
+• Note content
+• UI-generated note ID (if present)
+
+2.4.1.2 Call GET /notes via API
+1. Authenticate using API login.
+2. Call GET /notes endpoint.
+3. Validate:
+o Status 200
+o API response returns a list of notes
+o Response time < 2 sec
+
+2.4.1.3 Validate Note Exists in API Response
+Compare UI → API values:
+1. Validate new note title matches API list.
+2. Validate description matches.
+3. Validate status/metadata fields (createdAt, updatedAt if applicable).
+4. If no note ID in UI, match by (title + description) pair.
