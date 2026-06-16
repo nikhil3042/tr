@@ -23,3 +23,7 @@ webdriver-manager>=4.0.2
 robotframework-pythonlibcore>=4.4.1
 
 robotframework-pabot>=4.0
+
+allure-robotframework>=2.13.5
+
+robotframework-metrics>=3.7.0
