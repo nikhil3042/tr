@@ -14,6 +14,8 @@ pipeline {
         OUTPUT_DIR   = "output"
         REQ_FILE     = "requirements.txt"
         TESTS_DIR    = "tests"
+        ALLURE_RESULTS = "output\\allure-results"
+        ALLURE_REPORT  = "output\\allure-report"
     }
 
     stages {
@@ -137,7 +139,7 @@ pipeline {
                     mkdir "%OUTPUT_DIR%"
 
                     echo Running Robot Framework tests from "%TESTS_DIR%" (recursive)...
-                    python -m robot --outputdir "%OUTPUT_DIR%" "%TESTS_DIR%"
+                    python -m robot --outputdir "%OUTPUT_DIR%" --listener allure_robotframework:%ALLURE_RESULTS% "%TESTS_DIR%"
 
                     set RC=%ERRORLEVEL%
                     echo Robot Framework execution finished with exit code %RC%.
@@ -183,6 +185,34 @@ pipeline {
                 }
             }
         }
+        stage('Generate Allure Report') {
+            steps {
+                echo "==== Generating Allure HTML report ===="
+                bat """
+                    @echo off
+                    if not exist "%ALLURE_RESULTS%" (
+                        echo WARNING: Allure results not found. Skipping Allure report generation.
+                        exit /b 0
+                    )
+
+                    where allure >nul 2>nul
+                    if errorlevel 1 (
+                        echo WARNING: allure command not found on PATH. Skipping Allure report generation.
+                        exit /b 0
+                    )
+
+                    allure generate "%ALLURE_RESULTS%" -o "%ALLURE_REPORT%" --clean --single-file
+                    if errorlevel 1 (
+                        echo WARNING: allure generate failed. Continuing pipeline.
+                    ) else (
+                        echo Allure report generated successfully at %ALLURE_REPORT%
+                    )
+
+                    exit /b 0
+                """
+            }
+        }
+
         stage('Generate Robot Metrics') {
             steps {
                 echo "==== Generating Robot Framework Metrics report ===="
